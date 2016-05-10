@@ -1,10 +1,11 @@
-var gitVersion={"branch":"master","rev":"1","hash":"aa39852","hash160":"aa3985238a38b0065dc82d43947880700534881c"};
+var gitVersion={"branch":"master","rev":"2","hash":"53d4271","hash160":"53d4271d8d7e7647fabc0d5086acd4f000a04046"};
 /// <reference path="../dts/external.d.ts" />
 // dependencies
 var debug = require("debug")("git-version-json");
 var Promise = require("promise");
 var git = require("gulp-git");
 var gulp = require("gulp");
+var UA = require('universal-analytics');
 var MarkGitVersion = (function () {
     function MarkGitVersion() {
         this.gitTasks = new Array(4);
@@ -37,12 +38,19 @@ var MarkGitVersion = (function () {
     MarkGitVersion.prototype.fetchP = function () {
         return Promise.all(this.gitTasks).then(function () {
             debug(MarkGitVersion.gitVer);
+            if ((!MarkGitVersion._bDisabled) && typeof (gitVersion) !== "undefined") {
+                var visitor = UA("UA-75293894-5");
+                var gitMark = gitVersion.branch + "." + gitVersion.rev + "@" + gitVersion.hash;
+                visitor.event("git-version-json", "MarkGitVersion.fetchP", gitMark, MarkGitVersion.gitVer.rev);
+            }
             return MarkGitVersion.gitVer;
         });
     };
+    MarkGitVersion._bDisabled = false;
     MarkGitVersion.task = "mark-git-version";
     MarkGitVersion.gitVer = { branch: "$branch$", rev: "$rev$", hash: "$hash$", hash160: "$hash160$" };
     MarkGitVersion.getGitVerStr = function () { return JSON.stringify(MarkGitVersion.gitVer); };
+    MarkGitVersion.disableGA = function (value) { MarkGitVersion._bDisabled = value; };
     return MarkGitVersion;
 }());
 gulp.task(MarkGitVersion.task, function () {

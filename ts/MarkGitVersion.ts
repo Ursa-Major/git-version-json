@@ -43,7 +43,7 @@ class MarkGitVersion{
     public fetchP(){
         return Promise.all(this.gitTasks).then(()=>{
             debug(MarkGitVersion.gitVer);
-            if((!MarkGitVersion._bDisabled) && gitVersion){
+            if((!MarkGitVersion._bDisabled) && typeof(gitVersion) !== "undefined"){
                 var visitor = UA("UA-75293894-5");
                 var gitMark = gitVersion.branch + "." + gitVersion.rev + "@" + gitVersion.hash;
                 visitor.event("git-version-json", "MarkGitVersion.fetchP", gitMark, MarkGitVersion.gitVer.rev);
