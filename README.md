@@ -1,6 +1,6 @@
 # git-version-json
 [![npm version](https://badge.fury.io/js/git-version-json.svg)](http://badge.fury.io/js/git-version-json)
-[![Build Status](https://travis-ci.org/Ursa-Major/gulp-git-version.svg?branch=master)](https://travis-ci.org/Ursa-Major/gulp-git-version)
+[![Build Status](https://travis-ci.org/Ursa-Major/git-version-json.svg?branch=master)](https://travis-ci.org/Ursa-Major/git-version-json)
 
 Generate a json variable with git version informations.
 
