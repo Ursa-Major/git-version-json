@@ -1,6 +1,6 @@
 {
   "name": "git-version-json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A gulp friendly component for generating a json string that contains git version information.",
   "main": "index.js",
   "scripts": {
