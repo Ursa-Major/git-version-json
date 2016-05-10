@@ -1,0 +1,7 @@
+index.js.map
+gulpfile.js
+.npmignore
+.vscode/
+dts/
+ts/
+test/

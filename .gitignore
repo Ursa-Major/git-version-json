@@ -1,0 +1,4 @@
+index.js.map
+.vscode/
+node_modules/
+test/account.js
