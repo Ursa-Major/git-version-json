@@ -8,6 +8,12 @@ It is *NOT* a gulp plugin, but gulp friendly.
 It is usually use with gulp-header or gulp-footer.
 It is also can use separatedly.
 
+The generated json looks like as:
+```javascript
+var gitVersion={"branch":"master","rev":"2","hash":"53d4271","hash160":"53d4271d8d7e7647fabc0d5086acd4f000a04046"};
+```
+Check [index.js](https://github.com/Ursa-Major/git-version-json/blob/master/index.js#L1)
+
 ## Sample
 ```javascript
 var gulp = require('gulp');
@@ -34,6 +40,8 @@ gulp.task('build2', [GitVersionJson.task], function(){
 
 gulp.task('default', ['build']);
 ```
+
+A complete sample locates in [ali-mns/gulpfile.js](https://github.com/InCar/ali-mns/blob/master/gulpfile.js)
 
 # Privacy Policy
 We collect information about how you use the `git-version-json` packages for better service.
