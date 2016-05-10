@@ -1,4 +1,7 @@
 # git-version-json
+[![npm version](https://badge.fury.io/js/git-version-json.svg)](http://badge.fury.io/js/git-version-json)
+[![Build Status](https://travis-ci.org/Ursa-Major/gulp-git-version.svg?branch=master)](https://travis-ci.org/Ursa-Major/gulp-git-version)
+
 Generate a json variable with git version informations.
 
 It is *NOT* a gulp plugin, but gulp friendly.
