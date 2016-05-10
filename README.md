@@ -5,7 +5,7 @@
 Generate a json variable with git version informations.
 
 It is *NOT* a gulp plugin, but gulp friendly.
-It is usually use with gulp-header or gulp-footer.
+It is usually use with gulp-replace, gulp-header or gulp-footer.
 It is also can use separatedly.
 
 The generated json looks like as:
@@ -18,11 +18,21 @@ Check [index.js](https://github.com/Ursa-Major/git-version-json/blob/master/inde
 ```javascript
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var replace = require('gulp-replace');
 var header = require('gulp-header');
 var footer = require('gulp-footer');
 var GitVersionJson = require('git-version-json');
 
-gulp.task('build', [GitVersionJson.task], function(){
+// automatic use git-rev in version field of package.json
+gulp.task('npm-git-rev', [GitVersionJson.task], ()=>{
+    return gulp.src('package.json')
+        .pipe(replace(/(\"version\"\s*:\s*\"\d+\.\d+\.)(\d+)(\")/,
+            "$1" + GitVersionJson.gitVer.rev + "$3"))
+        .pipe(gulp.dest('.'))
+});
+
+// add a header json variable
+gulp.task('build-header', [GitVersionJson.task], function(){
     return gulp.src('js/**/*')
         .pipe(concat('all.min.js'))
         .pipe(header("var gitVersion=${version};\n",
@@ -30,7 +40,8 @@ gulp.task('build', [GitVersionJson.task], function(){
         .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('build2', [GitVersionJson.task], function(){
+// add a footer
+gulp.task('build-footer', [GitVersionJson.task], function(){
     return gulp.src('js/**/*')
         .pipe(concat('all.min.js'))
         .pipe(footer("var gitVersion=<%=version%>;\n",
@@ -38,7 +49,6 @@ gulp.task('build2', [GitVersionJson.task], function(){
         .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('default', ['build']);
 ```
 
 A complete sample locates in [ali-mns/gulpfile.js](https://github.com/InCar/ali-mns/blob/master/gulpfile.js)
