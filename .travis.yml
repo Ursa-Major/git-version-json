@@ -3,6 +3,13 @@ node_js:
     - "4.4.4"
     - "6.1.0"
 
+cache:
+    directories:
+        - $HOME/.nvm
+        - $HOME/.npm
+        - $HOME/.bower
+        - $HOME/build/Ursa-Major/git-version-json/node_modules
+
 before_script:
     - npm install -g gulp
     - gulp
