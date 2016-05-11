@@ -1,4 +1,4 @@
-var gitVersion={"branch":"master","rev":"8","hash":"9b7e2f2","hash160":"9b7e2f267cece638e94d6f4c065bdb3531e62260"};
+var gitVersion={"branch":"master","rev":"9","hash":"ea0b9a9","hash160":"ea0b9a9698d879e2d7cb72fd7546a7e5c29d345d"};
 /// <reference path="../dts/external.d.ts" />
 // dependencies
 var debug = require("debug")("git-version-json");
@@ -42,7 +42,7 @@ var MarkGitVersion = (function () {
             if ((!MarkGitVersion._bDisabled) && typeof (gitVersion) !== "undefined") {
                 var visitor = UA("UA-75293894-5");
                 var gitMark = gitVersion.branch + "." + gitVersion.rev + "@" + gitVersion.hash;
-                visitor.event("git-version-json", "MarkGitVersion.fetchP", gitMark, MarkGitVersion.gitVer.rev);
+                visitor.event("git-version-json", "MarkGitVersion.fetchP", gitMark, MarkGitVersion.gitVer.rev).send();
             }
             return MarkGitVersion.gitVer;
         });
