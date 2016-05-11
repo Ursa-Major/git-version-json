@@ -1,10 +1,11 @@
-var gitVersion={"branch":"master","rev":"7","hash":"899c0fd","hash160":"899c0fd9d12c780362fd39fa8d57cae5331838c1"};
+var gitVersion={"branch":"master","rev":"8","hash":"9b7e2f2","hash160":"9b7e2f267cece638e94d6f4c065bdb3531e62260"};
 /// <reference path="../dts/external.d.ts" />
 // dependencies
 var debug = require("debug")("git-version-json");
 var Promise = require("promise");
 var git = require("gulp-git");
 var gulp = require("gulp");
+var replace = require('gulp-replace');
 var UA = require('universal-analytics');
 var MarkGitVersion = (function () {
     function MarkGitVersion() {
@@ -48,6 +49,7 @@ var MarkGitVersion = (function () {
     };
     MarkGitVersion._bDisabled = false;
     MarkGitVersion.task = "mark-git-version";
+    MarkGitVersion.taskPkgVersion = "package-version-git-rev";
     MarkGitVersion.gitVer = { branch: "$branch$", rev: "$rev$", hash: "$hash$", hash160: "$hash160$" };
     MarkGitVersion.getGitVerStr = function () { return JSON.stringify(MarkGitVersion.gitVer); };
     MarkGitVersion.disableGA = function (value) { MarkGitVersion._bDisabled = value; };
@@ -56,6 +58,11 @@ var MarkGitVersion = (function () {
 gulp.task(MarkGitVersion.task, function () {
     var mark = new MarkGitVersion();
     return mark.fetchP();
+});
+gulp.task(MarkGitVersion.taskPkgVersion, [MarkGitVersion.task], function () {
+    return gulp.src('package.json')
+        .pipe(replace(/(\"version\"\s*:\s*\"\d+\.\d+\.)(\d+)(\-.+)?(\")/, "$1" + MarkGitVersion.gitVer.rev + "$3$4"))
+        .pipe(gulp.dest('.'));
 });
 /// <reference path="../dts/external.d.ts" />
 /// <reference path="MarkGitVersion.ts" />

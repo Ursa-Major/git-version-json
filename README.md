@@ -24,10 +24,15 @@ var footer = require('gulp-footer');
 var GitVersionJson = require('git-version-json');
 
 // automatic use git-rev in version field of package.json
-gulp.task('npm-git-rev', [GitVersionJson.task], ()=>{
+gulp.task('build-auto', [GitVersionJson.taskPkgVersion], function(){
+    // TODO: do others building logic
+});
+
+// this is the same to use 'GitVersionJson.taskPkgVersion'
+gulp.task('build-manual', [GitVersionJson.task], ()=>{
     return gulp.src('package.json')
-        .pipe(replace(/(\"version\"\s*:\s*\"\d+\.\d+\.)(\d+)(\")/,
-            "$1" + GitVersionJson.gitVer.rev + "$3"))
+        .pipe(replace(/(\"version\"\s*:\s*\"\d+\.\d+\.)(\d+)(\-.+)?(\")/,
+            "$1" + MarkGitVersion.gitVer.rev + "$3$4"))
         .pipe(gulp.dest('.'))
 });
 

@@ -5,6 +5,7 @@ var debug:any   = require("debug")("git-version-json");
 var Promise:any = require("promise");
 var git:any     = require("gulp-git");
 var gulp:any    = require("gulp");
+var replace:any = require('gulp-replace');
 var UA:any      = require('universal-analytics');
 
 class MarkGitVersion{
@@ -55,6 +56,7 @@ class MarkGitVersion{
     private gitTasks = new Array(4);
     private static _bDisabled = false;
     public static task = "mark-git-version";
+    public static taskPkgVersion = "package-version-git-rev";
     public static gitVer = { branch: "$branch$", rev: "$rev$", hash: "$hash$", hash160: "$hash160$" };
     public static getGitVerStr = ()=>{ return JSON.stringify(MarkGitVersion.gitVer); };
     public static disableGA = (value)=>{ MarkGitVersion._bDisabled = value; };
@@ -63,4 +65,10 @@ class MarkGitVersion{
 gulp.task(MarkGitVersion.task, ()=>{
     var mark = new MarkGitVersion();
     return mark.fetchP();
+});
+
+gulp.task(MarkGitVersion.taskPkgVersion, [MarkGitVersion.task], ()=>{
+    return gulp.src('package.json')
+        .pipe(replace(/(\"version\"\s*:\s*\"\d+\.\d+\.)(\d+)(\-.+)?(\")/, "$1" + MarkGitVersion.gitVer.rev + "$3$4"))
+        .pipe(gulp.dest('.'))
 });
