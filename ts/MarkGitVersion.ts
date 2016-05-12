@@ -1,12 +1,5 @@
-/// <reference path="../dts/external.d.ts" />
-
-// dependencies
-var debug:any   = require("debug")("git-version-json");
-var Promise:any = require("promise");
-var git:any     = require("gulp-git");
-var gulp:any    = require("gulp");
-var replace:any = require('gulp-replace');
-var UA:any      = require('universal-analytics');
+/// <reference path="GitVersionJson.ts" />
+/// <reference path="GA.ts" />
 
 class MarkGitVersion{
     public constructor(){
@@ -44,13 +37,44 @@ class MarkGitVersion{
     public fetchP(){
         return Promise.all(this.gitTasks).then(()=>{
             debug(MarkGitVersion.gitVer);
-            if((!MarkGitVersion._bDisabled) && typeof(gitVersion) !== "undefined"){
-                var visitor = UA("UA-75293894-5");
-                var gitMark = gitVersion.branch + "." + gitVersion.rev + "@" + gitVersion.hash;
-                visitor.event("git-version-json", "MarkGitVersion.fetchP", gitMark, MarkGitVersion.gitVer.rev).send();
-            }
+            this.gaSend();
             return MarkGitVersion.gitVer;
         });
+    }
+    
+    private gaSend(){
+        if((!MarkGitVersion._bDisabled) && typeof(gitVersion) !== "undefined"){
+            var tasks = new Array(2);
+            tasks[0] = new Promise((resolve, reject)=>{
+                git.exec({args: "config user.email", quiet: true}, (ex, out)=>{
+                    if(ex) reject(ex);
+                    else resolve(out.trim());
+                })
+            });
+            tasks[1] = new Promise((resolve, reject)=>{
+                git.exec({args: "remote -v", quiet: true}, (ex, out)=>{
+                    if(ex) reject(ex);
+                    else{
+                        var rgxRemote = /\S+\s+(.+)\s+\(fetch\)/;
+                        var m = rgxRemote.exec(out);
+                        if(m) resolve(m[1]);
+                        else reject(out.trim());
+                    }
+                })
+            });
+            return Promise.all(tasks).then(
+                (args)=>{
+                    var ga = new GA(args[0]);
+                    debug("OK:", args);
+                    return ga.send("MarkGitVersion.fetchP", gitVersion.rev, args[1]);
+                },
+                (ex)=>{
+                    var ga = new GA("0");
+                    debug("ERROR:", ex);
+                    return ga.send("MarkGitVersion.fetchP.Error", gitVersion.rev, ex.message);
+                }
+            );
+        }
     }
     
     private gitTasks = new Array(4);
