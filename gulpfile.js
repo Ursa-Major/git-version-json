@@ -11,7 +11,7 @@ var tsProject = ts.createProject('ts/tsconfig.json');
 
 gulp.task('pre-build', ()=>{
     var tsResult = tsProject.src()
-        .pipe(ts(tsProject));
+        .pipe(tsProject());
     return tsResult.js
         .pipe(gulp.dest('.'))
         .pipe(debug({ title: 'out: ' }));
@@ -31,7 +31,7 @@ gulp.task('build', ['fetch-git-version'], ()=>{
     var tsResult = tsProject.src()
         .pipe(sourcemaps.init())
         .pipe(debug({ title: 'ts: ' }))
-        .pipe(ts(tsProject));
+        .pipe(tsProject());
     return tsResult.js
         .pipe(sourcemaps.write('.'))
         .pipe(header("var gitVersion=${version};\n", { version: GitVersionJson.getGitVerStr() }))

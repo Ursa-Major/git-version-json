@@ -4,7 +4,7 @@
   "description": "A gulp friendly component for generating a json string that contains git version information.",
   "main": "index.js",
   "scripts": {
-    "prepublish": "gulp",
+    "prepare": "gulp",
     "test": "gulp --gulpfile test/main.js"
   },
   "repository": {
@@ -31,14 +31,15 @@
     "gulp-git": "^1.7.1",
     "gulp-replace": "^0.5.4",
     "promise": "^7.1.1",
-    "universal-analytics": "^0.3.11"
+    "universal-analytics": "^0.4.13"
   },
   "devDependencies": {
     "assert": "^1.3.0",
-    "del": "^2.2.0",
+    "del": "^3.0.0",
     "gulp-debug": "^2.1.2",
     "gulp-header": "^1.8.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^2.13.4"
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-typescript": "^3.2.0",
+    "typescript": "^2.4.1"
   }
 }
