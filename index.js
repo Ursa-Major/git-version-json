@@ -1,4 +1,4 @@
-var gitVersion={"branch":"master","rev":"12","hash":"5d25d5f","hash160":"5d25d5f42c7014aa8db3b4ed2faddb15a4e32712"};
+var gitVersion={"branch":"master","rev":"13","hash":"ffdfafc","hash160":"ffdfafc29c437b363db1fdb198ba38f2f436a985"};
 /// <reference path="../dts/external.d.ts" />
 // dependencies
 var debug = require("debug")("git-version-json");
