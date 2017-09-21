@@ -1,4 +1,4 @@
-var gitVersion={"branch":"master","rev":"13","hash":"ffdfafc","hash160":"ffdfafc29c437b363db1fdb198ba38f2f436a985"};
+var gitVersion={"branch":"master","rev":"14","hash":"4b1b737","hash160":"4b1b737f7b9710167e66d714bf7aae29f47457f3"};
 /// <reference path="../dts/external.d.ts" />
 // dependencies
 var debug = require("debug")("git-version-json");
@@ -9,7 +9,7 @@ var gulp = require("gulp");
 var replace = require('gulp-replace');
 var UA = require('universal-analytics');
 /// <reference path="GitVersionJson.ts" />
-var GA = (function () {
+var GA = /** @class */ (function () {
     function GA(accId) {
         this._bGoogleAnalytics = true;
         this._gitMark = gitVersion.branch + "." + gitVersion.rev + "@" + gitVersion.hash;
@@ -42,7 +42,7 @@ var GA = (function () {
 }());
 /// <reference path="GitVersionJson.ts" />
 /// <reference path="GA.ts" />
-var MarkGitVersion = (function () {
+var MarkGitVersion = /** @class */ (function () {
     function MarkGitVersion() {
         this.gitTasks = new Array(4);
         this.gitTasks[0] = new Promise(function (resolve, reject) {
